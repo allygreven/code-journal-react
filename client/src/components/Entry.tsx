@@ -6,14 +6,15 @@ export function Entry() {
       <div className="row">
         <div className="column-half">
           <div className="list-image-wrapper">
-            <img src="https://placehold.co/600x400" />
+            <img src="https://i3.wp.com/wallpapers.com/images/hd/fun-pictures-cwlrd7f7clrq8ebd.jpg?ssl=1" />
           </div>
         </div>
         <div className="column-half">
           <h2>
-            1<FaPencil className="edit" />
+            The Little Dude
+            <FaPencil className="edit" />
           </h2>
-          <p>1</p>
+          <p>This is The Little Dude surfing. Not many major waves today.</p>
         </div>
       </div>
     </li>
