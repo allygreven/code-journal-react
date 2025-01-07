@@ -1,22 +1,25 @@
 import { FormEvent, useState } from 'react';
-import { addEntry } from '../data';
+import { addEntry, updateEntry, type Entry } from '../data';
 import { useNavigate } from 'react-router-dom';
 
 type Props = {
-  entryId: string;
+  entry: Entry;
   onDeleteClick: () => void;
 };
 
-export function FormEntry({ entryId, onDeleteClick }: Props) {
-  const [photoUrl, setPhotoUrl] = useState('');
-  const [title, setTitle] = useState('');
-  const [notes, setNotes] = useState('');
-  const isNew = entryId === 'new';
+export function FormEntry({ entry, onDeleteClick }: Props) {
+  const [photoUrl, setPhotoUrl] = useState(entry.photoUrl);
+  const [title, setTitle] = useState(entry.title);
+  const [notes, setNotes] = useState(entry.notes);
   const navigate = useNavigate();
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    addEntry({ title, notes, photoUrl });
+    if (entry.entryId === 0) {
+      await addEntry({ title, notes, photoUrl });
+    } else {
+      await updateEntry({ title, notes, photoUrl, entryId: entry.entryId });
+    }
     navigate('/');
   }
 
@@ -24,7 +27,7 @@ export function FormEntry({ entryId, onDeleteClick }: Props) {
     <form id="entry-form" onSubmit={handleSubmit}>
       <div className="column-full">
         <h1 className="new-entry-header">
-          {isNew ? 'New Entry' : 'Edit Entry'}
+          {entry.entryId === 0 ? 'New Entry' : 'Edit Entry'}
         </h1>
       </div>
       <div className="row">
@@ -70,7 +73,7 @@ export function FormEntry({ entryId, onDeleteClick }: Props) {
           <div className="form-actions">
             <button
               onClick={onDeleteClick}
-              className={'delete-button' + (isNew ? ' hide' : '')}
+              className={'delete-button' + (entry.entryId === 0 ? ' hide' : '')}
               type="button">
               Delete Entry
             </button>
